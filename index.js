@@ -11,12 +11,12 @@ const feeds = [];
 (async () => {
   let feed = await parser.parseURL("http://g1.globo.com/dynamo/rss2.xml");
   feeds.push(feed.items[feed.items.length - 1].title);
-  console.log(feeds[0]);
+  console.log({Title: feeds[0], Link: feed.items[feed.items.length - 1].link});
   async function loop(rss) {
     feed = await parser.parseURL("http://g1.globo.com/dynamo/rss2.xml");
     if (!feeds.includes(rss[rss.length - 1].title)) {
       feeds.push(rss[rss.length - 1].title);
-      console.log(feeds[feeds.length - 1]);
+      console.log({Title: feeds[feeds.length - 1], Link: feed.items[feed.items.length - 1].link});
     }
   }
   setInterval(() => {
