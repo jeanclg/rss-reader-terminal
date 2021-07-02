@@ -1,6 +1,7 @@
 const Parser = require("rss-parser");
 const parser = new Parser();
 const express = require("express");
+const { table } = require("table");
 
 const app = express();
 
@@ -10,15 +11,19 @@ const feeds = [];
 
 (async () => {
   let feed = await parser.parseURL("http://g1.globo.com/dynamo/rss2.xml");
-  feed.items.forEach(item => {
+  feed.items.forEach((item) => {
     feeds.push(item.title);
-    console.log({Title: item.title, Link: item.link});
+
+    let data = [[item.title]];
+    console.log(table(data));
   });
   async function loop(rss) {
     feed = await parser.parseURL("http://g1.globo.com/dynamo/rss2.xml");
     if (!feeds.includes(rss[rss.length - 1].title)) {
       feeds.push(rss[rss.length - 1].title);
-      console.log({Title: feeds[feeds.length - 1], Link: feed.items[feed.items.length - 1].link});
+
+      data = [[feeds[feeds.length - 1]]];
+      console.log(table(data));
     }
   }
   setInterval(() => {
